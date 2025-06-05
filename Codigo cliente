@@ -1,0 +1,13 @@
+flowchart TD
+    Cliente -->|1. iniciarSesion| AppCompras
+    Cliente -->|2. buscarProducto| AppCompras
+    AppCompras -->|3. getProductos| Catalogo
+    Catalogo -->|4. mostrarProductos| AppCompras
+
+    Cliente -->|5. agregarAlCarrito producto| AppCompras
+    AppCompras -->|6. addItem producto| Carrito
+
+    Cliente -->|7. procederPago infoPago| AppCompras
+    AppCompras -->|8. procesarPago infoPago| Pago
+    Pago -->|9. confirmacion| AppCompras
+    AppCompras -->|10. mostrarResumen| Cliente
