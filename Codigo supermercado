@@ -1,0 +1,74 @@
+flowchart TD
+  subgraph Localhost_PC_Desarrollador
+    VSCode[VS Code + Terminal]
+    SourceCode[Código fuente SuperMarketApp]
+    auth[authController.js]
+    productos[productosController.js]
+    carrito[carritoController.js]
+    adminHTML[adminPanel.html]
+    registroJS[registro.js]
+    devServer[Servidor Node.js dev]
+    mysqlLocal[MySQL Local - puerto 3306]
+
+    VSCode --> SourceCode
+    SourceCode --> auth
+    SourceCode --> productos
+    SourceCode --> carrito
+    SourceCode --> adminHTML
+    SourceCode --> registroJS
+    SourceCode --> devServer
+    devServer --> mysqlLocal
+  end
+
+  subgraph Navegador_Cliente
+    frontend[Frontend SuperMarketApp]
+    index[index.html]
+    detalle[producto.html]
+    carritoHTML[carrito.html]
+    registroHTML[registro.html]
+    jsCarrito[addToCart.js]
+    ajax[AJAX / API Requests]
+
+    frontend --> index
+    frontend --> detalle
+    frontend --> carritoHTML
+    frontend --> registroHTML
+    frontend --> jsCarrito
+    jsCarrito --> ajax
+  end
+
+  subgraph VPS_Produccion
+    nginx[NGINX Reverse Proxy]
+    pm2[PM2 - Gestor de procesos]
+    nodeProd[Node.js Producción]
+    express[Express App]
+    jwt[JWT Middleware]
+    routers[MVC Routers]
+    logger[Logger y Sanitizer]
+    mysqlRemoto[MySQL Remoto - MariaDB]
+    apiEnvios[API de Envíos]
+    apiPagos[API de Pagos]
+    fs[Sistema de Archivos]
+    uploads[Directorio /uploads]
+    logs[Directorio /logs]
+
+    nginx --> nodeProd
+    pm2 --> nodeProd
+    nodeProd --> express
+    nodeProd --> jwt
+    nodeProd --> routers
+    nodeProd --> logger
+    nodeProd --> mysqlRemoto
+    nodeProd --> apiEnvios
+    nodeProd --> apiPagos
+    nodeProd --> fs
+    fs --> uploads
+    fs --> logs
+  end
+
+  %% Conexiones globales
+  ajax -->|HTTPS| nginx
+  nodeProd -->|SQL 3306| mysqlRemoto
+  nodeProd -->|HTTPS| apiEnvios
+  nodeProd -->|HTTPS| apiPagos
+
