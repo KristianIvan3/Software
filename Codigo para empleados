@@ -1,0 +1,28 @@
+flowchart TD
+    A[Inicio de sesión del empleado] --> B{¿Inicio de sesión exitoso?}
+    B -- Sí --> C[Panel principal del empleado]
+    B -- No --> Z[Mostrar mensaje de error]
+
+    C --> D[Revisar pedidos pendientes]
+    C --> E[Ver inventario]
+    C --> F[Actualizar estado de pedido]
+    C --> G[Registrar entrada de productos]
+    C --> H[Cerrar sesión]
+
+    D --> D1[Seleccionar pedido]
+    D1 --> D2[Ver detalles del pedido]
+    D2 --> D3[Preparar pedido]
+    D3 --> D4[Marcar como listo para entrega]
+
+    E --> E1[Buscar producto]
+    E1 --> E2[Ver cantidad disponible]
+
+    F --> F1[Buscar pedido]
+    F1 --> F2[Seleccionar nuevo estado]
+    F2 --> F3[Guardar cambios]
+
+    G --> G1[Escanear código de barras o ingresar producto]
+    G1 --> G2[Ingresar cantidad]
+    G2 --> G3[Actualizar inventario]
+
+    H --> I[Fin de sesión]
