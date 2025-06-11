@@ -1,0 +1,77 @@
+flowchart TD
+
+  %% === DESARROLLO LOCAL ===
+  subgraph Desarrollo_Local [💻 Localhost PC Desarrollador]
+    VSCode[📝 VS Code + Terminal]
+    SourceCode[📁 Código Fuente SuperMarketApp]
+    authCtrl[🔐 authController.js]
+    productosCtrl[🛒 productosController.js]
+    carritoCtrl[🛍️ carritoController.js]
+    adminHTML[🧰 adminPanel.html]
+    registroJS[📄 registro.js]
+    devServer[🖥️ Servidor Node.js (desarrollo)]
+    mysqlLocal[🗄️ MySQL Local (puerto 3306)]
+
+    VSCode --> SourceCode
+    SourceCode --> authCtrl
+    SourceCode --> productosCtrl
+    SourceCode --> carritoCtrl
+    SourceCode --> adminHTML
+    SourceCode --> registroJS
+    SourceCode --> devServer
+    devServer --> mysqlLocal
+  end
+
+  %% === CLIENTE/NAVEGADOR ===
+  subgraph Cliente [🌐 Navegador del Cliente]
+    frontend[🎨 Frontend SuperMarketApp]
+    indexHTML[📄 index.html]
+    productoHTML[📄 producto.html]
+    carritoHTML[📄 carrito.html]
+    registroHTML[📄 registro.html]
+    jsCarrito[📜 addToCart.js]
+    ajax[🔁 AJAX / API Requests]
+
+    frontend --> indexHTML
+    frontend --> productoHTML
+    frontend --> carritoHTML
+    frontend --> registroHTML
+    frontend --> jsCarrito
+    jsCarrito --> ajax
+  end
+
+  %% === SERVIDOR PRODUCCIÓN ===
+  subgraph Produccion [🖥️ VPS Producción]
+    nginx[🌐 NGINX Reverse Proxy]
+    pm2[🔁 PM2 (Gestor de procesos)]
+    nodeServer[🚀 Node.js App (Producción)]
+    express[🧠 Express.js App]
+    jwt[🔐 JWT Middleware]
+    routers[📦 MVC Routers (Auth, Productos, Carrito)]
+    logger[📋 Logger & Sanitizer]
+    mysqlRemoto[🗄️ MySQL/MariaDB Remoto]
+    apiEnvios[📦 API de Envíos]
+    apiPagos[💳 API de Pagos]
+    fs[📁 Sistema de Archivos]
+    uploads[📤 /uploads]
+    logs[🗂️ /logs]
+
+    nginx --> nodeServer
+    pm2 --> nodeServer
+    nodeServer --> express
+    nodeServer --> jwt
+    nodeServer --> routers
+    nodeServer --> logger
+    nodeServer --> mysqlRemoto
+    nodeServer --> apiEnvios
+    nodeServer --> apiPagos
+    nodeServer --> fs
+    fs --> uploads
+    fs --> logs
+  end
+
+  %% === CONEXIONES ENTRE CLIENTE Y PRODUCCIÓN ===
+  ajax -->|HTTPS| nginx
+  nodeServer -->|SQL 3306| mysqlRemoto
+  nodeServer -->|HTTPS| apiEnvios
+  nodeServer -->|HTTPS| apiPagos
