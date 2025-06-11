@@ -1,0 +1,77 @@
+flowchart TD
+
+  %% === DESARROLLO LOCAL ===
+  subgraph Desarrollo_Local [💻 Localhost - PC Desarrollador]
+    VSCode[📝 VS Code + Terminal]
+    SourceCode[📁 Código Fuente SuperMarketApp]
+    authCtrl[🔐 authController.js]
+    productosCtrl[🛒 productosController.js]
+    carritoCtrl[🧺 carritoController.js]
+    adminPanelHTML[📄 adminPanel.html]
+    registroJS[📜 registro.js]
+    devServer[🖥️ Servidor Node.js (desarrollo)]
+    mysqlLocal[🗄️ MySQL Local (Puerto 3306)]
+
+    VSCode --> SourceCode
+    SourceCode --> authCtrl
+    SourceCode --> productosCtrl
+    SourceCode --> carritoCtrl
+    SourceCode --> adminPanelHTML
+    SourceCode --> registroJS
+    SourceCode --> devServer
+    devServer --> mysqlLocal
+  end
+
+  %% === CLIENTE / NAVEGADOR ===
+  subgraph Cliente_Web [🌍 Navegador del Usuario]
+    frontend[🎨 Frontend SuperMarketApp]
+    indexHTML[📄 index.html]
+    productoHTML[📄 producto.html]
+    carritoHTML[📄 carrito.html]
+    registroHTML[📄 registro.html]
+    jsAddToCart[📜 addToCart.js]
+    ajax[🔁 Peticiones AJAX/API]
+
+    frontend --> indexHTML
+    frontend --> productoHTML
+    frontend --> carritoHTML
+    frontend --> registroHTML
+    frontend --> jsAddToCart
+    jsAddToCart --> ajax
+  end
+
+  %% === PRODUCCIÓN EN VPS ===
+  subgraph Produccion [🖥️ Servidor VPS - Producción]
+    nginx[🌐 NGINX (Reverse Proxy)]
+    pm2[🔁 PM2 (Gestor de procesos)]
+    nodeApp[🚀 Node.js - App Producción]
+    expressApp[🧠 Express.js (Controlador Principal)]
+    jwtMiddleware[🔐 Middleware JWT]
+    apiRouters[📦 Rutas MVC (Auth, Productos, Carrito)]
+    logService[📋 Logger + Sanitizer]
+    mysqlRemote[🗄️ MySQL/MariaDB Remoto]
+    envioAPI[🚚 API de Envíos (Terceros)]
+    pagoAPI[💳 API de Pagos (Terceros)]
+    fileSystem[📁 Sistema de Archivos]
+    uploadsDir[📤 /uploads]
+    logsDir[🗂️ /logs]
+
+    nginx --> nodeApp
+    pm2 --> nodeApp
+    nodeApp --> expressApp
+    nodeApp --> jwtMiddleware
+    nodeApp --> apiRouters
+    nodeApp --> logService
+    nodeApp --> mysqlRemote
+    nodeApp --> envioAPI
+    nodeApp --> pagoAPI
+    nodeApp --> fileSystem
+    fileSystem --> uploadsDir
+    fileSystem --> logsDir
+  end
+
+  %% === CONEXIONES GLOBALES ===
+  ajax -->|🔐 HTTPS| nginx
+  nodeApp -->|SQL 🔗 3306| mysqlRemote
+  nodeApp -->|HTTPS 🔗| envioAPI
+  nodeApp -->|HTTPS 🔗| pagoAPI
